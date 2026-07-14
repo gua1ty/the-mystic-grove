@@ -1,0 +1,306 @@
+/* GENERAL STYLES*/
+
+body {
+    font-family: "Philosopher", serif;
+    font-weight: 400;
+    background-color: #f9f6e3;
+    color: #251e3a;
+}
+
+h1, h2, h3, h4, h5, .navbar-guild-title {
+    font-family: "Rye", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.purple { 
+    color: #6b5aa0; 
+}
+
+.purple-light { 
+    color: #7d4a91; 
+}
+
+
+.purple-dark { 
+    color: #3d2d52; 
+}
+.gold { 
+    color: #b28d1e; 
+}
+.gold-light { 
+    color: #d8bd6d; 
+}
+
+.welcome-title { 
+    color: #6b5aa0; }
+
+.separator, .current-places {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+
+.header-navbar {
+    border-bottom: 2.5px solid #b28d1e !important;
+}
+
+.stat-text{
+    font-family: "Rye", serif;
+    font-weight: 400;
+    font-size: 2rem;
+    
+}
+
+/* CARDS - CONTAINERS */
+
+.quest-card {
+    border: 3px solid #b28d1e !important;
+    background-color: #f9f6e3 !important;
+    box-shadow: 4px 4px 4px rgba(139, 111, 71, 0.3) !important;
+}
+
+.login-card, 
+.register-card {
+    border: 3px solid #b28d1e !important;
+    background-color: #7d4a91 !important;
+    box-shadow: 4px 4px 4px rgba(139, 111, 71, 0.3) !important;
+}
+
+.quest-creation-card, 
+.session-creation-card, .filter-menu {
+    background-color: #7d4a91 !important;
+    border: 3px solid #4d3d80 !important;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    color: #f9f6e3;
+    box-shadow: 5px 5px 4px rgba(59, 41, 93, 0.25);
+}
+
+
+
+.session-list {
+    max-height: 550px; 
+    overflow-y: auto;
+    background-color: transparent !important;
+    border: 3px solid #6b5aa0 !important; 
+    border-radius: 5px;
+    box-shadow: 5px 5px 4px rgba(59, 41, 93, 0.25);
+}
+
+
+.council-card {
+    background-color: #3d2d52 !important;
+    border: 3px solid #b28d1e !important; 
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    color: #ebe2c8 !important;
+    box-shadow: 5px 5px 4px rgba(59, 41, 93, 0.25);
+}
+
+.council-card .card-title,
+.council-card .list-group-item, 
+.council-card .span {
+    color: #b28d1e !important;
+}
+
+.council-weekly-session-card {
+    background-color: #ebe2c8 !important;
+    border: 3px solid #b28d1e !important; 
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    color: #27272b !important;
+    box-shadow: 5px 5px 4px rgba(59, 41, 93, 0.25);
+    max-height: 650px; 
+    overflow-y: auto;
+}
+
+.session-council {
+    border-bottom: 2px solid #b28d1e !important;
+}
+
+
+/*  FORMS */
+.form-select, 
+.form-control {
+    background-color: #fdf8ec;
+    border: 2px solid #b28d1e;
+    color: #3d2d52;
+    box-shadow: 0 2px 4px rgba(139, 111, 71, 0.3);
+}
+
+.form-control-purple, 
+.form-select-purple {
+    background-color: #fdf8ec !important;
+    border: 2px solid #4d3d80 !important; 
+    color: #3d2d52;
+    box-shadow: 0 2px 4px rgba(139, 111, 71, 0.3);
+}
+
+/* Buttons */
+.custom-radio-btn {
+    border: 2px solid #6b5aa0;   
+    color: #6b5aa0;               
+    border-radius: 5px;       
+}
+
+.custom-radio-btn:hover { 
+    background-color: #6b5aa0 !important; 
+}
+
+.btn-check:checked + .custom-radio-btn {
+    background-color: #6b5aa0; 
+    border-color: #59359a;
+    color: white;
+}
+
+.btn-check:disabled + .custom-radio-btn {
+    border-color: #b1a6d0;
+    color: #b1a6d0;
+    opacity: 0.7;
+}
+
+.btn-filter, 
+.btn-gold {
+    border: 2px solid #4d3d80 !important;
+    border-radius: 5px;
+    background-color: #b28d1e;
+    color: #eee0b5;
+}
+
+.btn-filter:hover, 
+.btn-gold:hover {
+    background-color: #f9f6e3 !important;
+    color: #6b5aa0;
+}
+
+.btn-details, 
+.btn-purple {
+    border: 2px solid #6b5aa0 !important;
+    border-radius: 5px;
+}
+
+.btn-details:hover, 
+.btn-purple:hover {
+    background-color: #6b5aa0 !important;
+    border: 2px solid #4d3d80 !important;
+    color: white;
+}
+
+.btn-login-purple {
+    border: 2px solid #4d3d80 !important;
+    border-radius: 5px;
+    background-color: #6b5aa0 !important;
+    color: #eee0b5 !important;
+}
+
+.btn-register {
+    color: #6b5aa0 !important;
+}
+
+.btn-light-gold {
+    border: 2px solid #7d4a91 !important;
+    border-radius: 5px;
+    background-color: #d8bd6d;
+    color: #7d4a91;
+}
+
+/* --- 6. BADGES & TAGS --- */
+.day-header {
+    border: 3px solid #b28d1e !important;
+    background-color: #eee0b5 !important;
+    border-radius: 3px;
+    color: #b28d1e !important;
+    padding: 6px 0.2rem 0.1rem;
+}
+
+.purple-header-box {
+    border: 3px solid #6b5aa0 !important;
+    background-color: #eedef4 !important;
+    border-radius: 3px;
+    color: #6b5aa0 !important;
+    padding: 6px 0.2rem 0.1rem;
+}
+
+
+/*BADGES*/
+
+.quest-duration { 
+    border: 2px solid #4850c6 !important; 
+    border-radius: 5px; 
+}
+
+.quest-type { 
+    border: 2px solid #bb48c6 !important; 
+    border-radius: 5px; }
+
+/* Difficulty  */
+.badge-easy { 
+    border: 2px solid #3d8060 !important; 
+    border-radius: 5px; }
+
+.badge-medium { 
+    border: 2px solid #c69c48 !important; 
+    border-radius: 5px; }
+
+.badge-hard { 
+    border: 2px solid #9a3221 !important; 
+    border-radius: 5px; }
+
+.badge-legendary { 
+    border: 2px solid #7d4a91 !important; 
+    border-radius: 5px; }
+
+.badge-gold {
+    border: 2.5px solid #b28d1e !important;
+    background-color: #eee0b5 !important;
+    color: #b28d1e !important;
+    border-radius: 5px;
+}
+
+/* Role */
+.badge-mage {
+    background-color: #91aaca !important;
+    border: 2.5px solid #3c61c7 !important; 
+    border-radius: 5px;
+}
+.badge-warrior {
+    background-color: #d19090 !important;
+    border: 2.5px solid #a22323 !important; 
+    border-radius: 5px;
+}
+.badge-healer {
+    background-color: #a5c989 !important;
+    border: 2.5px solid #407035 !important; 
+    border-radius: 5px;
+}
+
+/* IMAGES - ICONS */
+.card-img-top {
+    width: 100%;
+    height: 230px; 
+    object-fit: cover;
+}
+
+.quest-img-details {
+    width: 750px;       
+    height: 400px;   
+    object-fit: cover;  
+    border-radius: 8px;
+    border: 3px solid #b28d1e !important;
+}
+
+.quest-profile-img {
+    width: 100%;
+    height: 210px;     
+    object-fit: cover; 
+}
+
+.class-icon { 
+    height: 25px; 
+}
+
+.class-icon-small { 
+    height: 20px;
+ }

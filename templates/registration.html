@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Registration
+{% endblock%}
+
+{%block content%}
+
+<div class="row justify-content-center mt-5">
+
+    <div class="col-md-4 register-card card  align-items-center">
+        <div class="card-body col-md-11">
+
+            <h3 class="gold-light"> Create your account</h3>
+
+            <form action="/register" method="post"
+                enctype="multipart/form-data">
+                <label for="txt_username" class="form-label gold-light"> Username </label>
+                <input type="text" class="form-control" name="txt_username"
+                    id="txt_username" placeholder="Insert you username"
+                    minlength="3" maxlength="25" required />
+
+                <label for="txt_email" class="form-label gold-light"> Email</label>
+                <input type="email" class="form-control" name="txt_email"
+                    id="txt_email" placeholder="Insert your Email" required />
+
+                <label for="txt_password" class="form-label gold-light"> Password</label>
+                <input type="password" class="form-control" name="txt_password"
+                    id="txt_password" placeholder="Insert your Password"
+                    required />
+
+                <br>
+                <button type="submit"
+                    class="btn btn-gold btn-sm">Register</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

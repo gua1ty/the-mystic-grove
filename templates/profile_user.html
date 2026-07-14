@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="text-center gold">YOUR PROFILE</h3>
+
+<h4 class="mb-1 gold">You enrolled to {{enrolled_count}}/3 sessions</h3>
+
+<div class="enrollments-container">
+
+   
+    {% for enrollment in enrollments %}
+
+    <div class="card quest-card mb-3 col-md-12">
+        <div class="row g-0">
+            <div class="col-md-2">
+                <img src="{{ url_for('static', filename=enrollment.quest_img) }}"
+                    alt="{{ enrollment.title }}"
+                    class="quest-profile-img">
+            </div>
+
+            <div class="col-md-9 ps-2">
+                <div class="card-body p-4">
+                    <h4 class="mb-3 gold">{{ enrollment.title }}</h4>
+
+                    <div class=" ">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-md-8">
+                                <span
+                                    class=" badge-gold p-1 fw-semibold me-4 ">{{
+                                    enrollment.day | capitalize }} - {{
+                                    enrollment.start_time }} - {{
+                                    enrollment.location }} </span>
+                                <span class=" me-4 p-1 ">
+                                    {{enrollment.quest_type | capitalize}}
+                                </span>
+
+                                <span
+                                    class="p-1 me-4 badge-{{enrollment.difficulty}}">{{
+                                    enrollment.difficulty | capitalize }}</span>
+
+                            </div>
+
+                            <div class="col-md-4 text-end">
+                                {% if enrollment.can_be_modified %}
+                                <button type="button"
+                                    onclick="toggleEditForm({{ enrollment.session_id }})"
+                                    class=" btn-purple btn btn-sm">Modify</button>
+                                <form
+                                    action="{{ url_for('delete_enrollment', session_id=enrollment.session_id, id = enrollment.id) }}"
+                                    method="post" class="d-inline">
+                                    <button type="submit"
+                                        class="btn btn-sm btn-outline-danger">Disenroll</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <span> You enrolled as: </span>
+                            <span class="p-1 me-4 badge-{{enrollment.class}}">{{
+                                enrollment.class | capitalize }}
+                            </span>
+
+                            <span> Places reserved: {{enrollment.places}}</span>
+
+                        </div>
+
+                        <div>
+                            <span class="  me-3"> CURRENT PARTY: </span>
+                            <span class=" me-4">
+                                <img
+                                    src="{{ url_for('static', filename='images/warrior_icon.png') }}"
+                                    alt="Warrior" class="class-icon-small">
+                                {{enrollment.taken_places.warrior }}/4</span>
+                            <span class="  me-4"> <img
+                                    src="{{ url_for('static', filename='images/mage_icon.png') }}"
+                                    alt="Warrior" class="class-icon-small">
+                                {{
+                                enrollment.taken_places.mage }}/3</span>
+                            <span class="  "><img
+                                    src="{{ url_for('static', filename='images/healer_icon.png') }}"
+                                    alt="Warrior"
+                                    class="class-icon-small pe-2">{{
+                                enrollment.taken_places.healer }}/2</span>
+                        </div>
+
+                        {% if enrollment.can_be_modified %}
+                        <div id="edit-form-{{ enrollment.session_id }}"
+                            class="d-none mt-3 ">
+                            <form
+                                action="{{ url_for('edit_enrollment', session_id=enrollment.session_id) }}"
+                                method="post"
+                                class="d-flex align-items-end gap-3 flex-wrap">
+                                <div>
+                                    <label
+                                        for="role-{{ enrollment.session_id }}"
+                                        class="form-label mb-1"><small>Change
+                                            role</small></label>
+                                    <select name="role"
+                                        id="role-{{ enrollment.session_id }}"
+                                        class="form-select form-select-sm">
+                                        <option value="warrior" {% if
+                                            enrollment.class == 'warrior'
+                                            %}selected{% endif
+                                            %}>Warrior</option>
+                                        <option value="mage" {% if
+                                            enrollment.class == 'mage'
+                                            %}selected{% endif %}>Mage</option>
+                                        <option value="healer" {% if
+                                            enrollment.class == 'healer'
+                                            %}selected{% endif
+                                            %}>Healer</option>
+
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        for="places-{{ enrollment.session_id }}"
+                                        class="form-label mb-1"><small>Places
+                                            (max 2)</small></label>
+                                    <input type="number" name="places"
+                                        id="places-{{ enrollment.session_id }}"
+                                        class="form-control form-control-sm"
+                                        min="1" max="2"
+                                        value="{{ enrollment.places }}">
+                                </div>
+                                <button type="submit"
+                                    class="btn btn-gold btn-sm">Save
+                                    Changes</button>
+                            </form>
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

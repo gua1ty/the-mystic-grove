@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="quest-info col-md-7 me-5">
+    <h2 class="col-12 text-center mb-4 purple-header-box">
+        {{session.title}}</h2>
+
+    <div class=" text-center">
+
+        <img src="{{ url_for('static', filename=session.quest_img) }}"
+            alt="{{ session.title }}"
+            class=" quest-img-details mb-2">
+    </div>
+    <div class=" text-center">
+
+        <p class=" badge-gold p-1 fw-semibold"> {{ session.day | capitalize
+            }} - {{ session.start_time }} {{ session.location }}</p>
+    </div>
+
+    <p class="card-text pt-2 ps-3 pe-3"> {{session.description}} </p>
+
+    <div class="row ps-4 pe-4 justify-content-between align-items-center">
+
+        <span
+            class="quest-duration p-1 col-md-3 text-center ">
+            Duration: <br>
+            {{session.duration_min}} min
+        </span>
+
+        <span
+            class="quest-type p-1 col-md-4 text-center badge-{{ session.type }}">
+            Quest type: <br>{{session.quest_type}}
+        </span>
+
+        <span
+            class="quest-info p-1 col-md-4 text-center badge-{{ session.difficulty }}">
+            Difficulty: <br>{{session.difficulty}}
+        </span>
+
+    </div>
+</div>
+
+<div class="quest-info col-md-4 mt-5 ">
+
+    <div class="card quest-card justify-content-between align-items-center">
+        <div class="card-body col-md-10 ">
+            <h3 class="card-title gold text-center mb-4">Quest
+                Partecipation</h3>
+
+            <h5 class="card-title gold text-center mb-4">Arleady reserved
+                places</h5>
+
+            <div class="row ">
+                <div
+                    class="quest-info d-flex  justify-content-between align-items-center pe-3 mb-4">
+                    <div
+                        class="quest-info d-flex  justify-content-center align-items-center">
+                        <img
+                            src="{{ url_for('static', filename='images/warrior_icon.png') }}"
+                            alt="Warrior" class="class-icon">
+
+                        <span class="separator ps-3 ">Warrior</span>
+
+                    </div>
+
+                    <span
+                        class="current-places ms-4 ">{{session.places.warrior}}/4</span>
+
+                </div>
+
+                <div
+                    class="quest-info d-flex  justify-content-between align-items-center pe-3 mb-4">
+                    <div
+                        class="quest-info d-flex  justify-content-center align-items-center">
+                        <img
+                            src="{{ url_for('static', filename='images/mage_icon.png') }}"
+                            alt="Mage" class="class-icon">
+
+                        <span class="separator ps-3 ">Mage</span>
+
+                    </div>
+
+                    <span
+                        class="current-places ms-4 ">{{session.places.mage}}/3</span>
+
+                </div>
+
+                <div
+                    class="quest-info d-flex  justify-content-between align-items-center pe-3 mb-4">
+                    <div
+                        class="quest-info d-flex  justify-content-center align-items-center">
+                        <img
+                            src="{{ url_for('static', filename='images/healer_icon.png') }}"
+                            alt="Healer" class="class-icon">
+
+                        <span class="separator ps-3 ">Healer</span>
+
+                    </div>
+
+                    <span
+                        class="current-places">{{session.places.healer}}/2</span>
+
+                </div>
+
+                <form action="{{ url_for('enroll', session_id=session.id) }}"
+                    method="POST">
+
+                    {% if current_user.is_authenticated and (current_user.role
+                    == 'guild_master' or current_user.role == 'guild_council')
+                    %}
+
+                    <p class="text-center">Guild Masters and Council members
+                        cannot enroll in quests.</p>
+
+                    {% elif session.places.warrior >= 4 and session.places.mage
+                    >= 3 and session.places.healer >= 2 %}
+
+                    <p>No more places available for this session</p>
+
+                    {% else %}
+
+                    <h5 class="form-label purple fw-bold mb-3 text-center">
+                        Chose
+                        your class</h5>
+
+                    <div
+                        class="d-flex gap-3 mb-4 text-center align-items-center">
+
+                        <input type="radio" class="btn-check" name="role"
+                            id="role_warrior" value="warrior" required
+                            {% if session.places.warrior>= 4 %}disabled{% else
+                        %}checked{% endif %} >
+                        <label class="btn custom-radio-btn w-100 py-2"
+                            for="role_warrior">
+                            Warrior {% if session.places.warrior >= 4 %}(full){%
+                            endif %}
+                        </label>
+
+                        <input type="radio" class="btn-check" name="role"
+                            id="role_mage" value="mage" required
+                            {% if session.places.mage>= 3 %}disabled{% endif %}>
+                        <label class="btn custom-radio-btn w-100 py-2"
+                            for="role_mage">
+                            Mage {% if session.places.mage >= 3 %}(full){% endif
+                            %}
+                        </label>
+
+                        <!-- Healer -->
+                        <input type="radio" class="btn-check" name="role"
+                            id="role_healer" value="healer" required
+                            {% if session.places.healer>= 2 %}disabled{% endif
+                        %}>
+                        <label class="btn  custom-radio-btn w-100 py-2"
+                            for="role_healer">
+                            Healer {% if session.places.healer >= 2 %}(pieno){%
+                            endif %}
+                        </label>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="form-label fw-bold text-center mb-3">Bring a
+                            friend?</h6>
+                        <div class="d-flex gap-3">
+                            <input type="radio" class="btn-check" name="number"
+                                id="num_1" value="1" required checked>
+                            <label class="btn custom-radio-btn w-100 py-2"
+                                for="num_1">
+                                1
+                            </label>
+
+                            <input type="radio" class="btn-check" name="number"
+                                id="num_2" value="2" required>
+                            <label class="btn custom-radio-btn w-100 py-2"
+                                for="num_2">
+                                2
+                            </label>
+                        </div>
+                    </div>
+
+                    {% if not current_user.is_authenticated %}
+                    <a class="btn btn-filter btn-primary col-12"
+                        href="{{ url_for('login')}}"
+                        role="button">Login to enroll</a>
+
+                    {% else %}
+
+                    <div class="sumbit text-center ">
+                        <button type="submit"
+                            class="btn btn-filter btn-primary col-8 ">Enroll</button>
+                    </div>
+                    {% endif %}
+
+                    {% endif %}
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

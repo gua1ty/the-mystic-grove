@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="filter col-12 text-center mt-2">
+
+    <header class="welcome-title pt-2 mb-4 mt-2">
+        <h1>Welcome back {{current_user.username}}!</h1>
+        <h2> - Find your next quest! - </h2>
+    </header>
+
+    <!-- Filter Menu-->
+    <form action="{{ url_for('home') }}" method="GET" class="filter-menu">
+
+        <div class="row g-3 align-items-end justify-content-between">
+
+            <div class="col-12 col-md-2">
+                <label for="day_filter"
+                    class="form-label fw-bold">Day:</label>
+                <select name="day" id="day_filter"
+                    class="form-select">
+                    <option value="all" selected>All</option>
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                    <option value="sunday">Sunday</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-2">
+                <label for="type-filter"
+                    class="form-label fw-bold">Type:</label>
+                <select name="type" id="type-filter"
+                    class="form-select">
+                    <option value="all" selected>All</option>
+                    <option value="combat">Combat</option>
+                    <option value="exploration">Exploration</option>
+                    <option value="puzzle">Puzzle</option>
+                    <option value="stealth">Stealth</option>
+                    <option value="survival">Survival</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-3">
+                <label for="difficulty-filter"
+                    class="form-label fw-bold">Difficulty:</label>
+                <select name="difficulty" id="difficulty-filter"
+                    class="form-select">
+                    <option value="all" selected>All</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="legendary">Legendary</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <label for="filtro_ruolo"
+                    class="form-label fw-bold">Available
+                    Role:</label>
+                <select name="role" id="filtro_ruolo"
+                    class="form-select">
+                    <option value="all" selected>All</option>
+                    <option value="mage">Mage</option>
+                    <option value="warrior">Warrior</option>
+                    <option value="healer">Healer</option>
+                </select>
+            </div>
+
+            <div class="col-md-1 ">
+                <button type="submit"
+                    class="btn btn-filter">Filter
+                </button>
+            </div>
+
+        </div>
+
+    </form>
+
+    <section class="quest-section col-12 mt-4">
+
+        {% for day, sessions in sessions_order_by_day.items() %}
+
+        {% if sessions != [] %}
+
+        <h3 class="day-header p-1"> {{day|capitalize}}</h3>
+
+        <div class="row g-4 quests mb-5">
+
+            {% for session in sessions %}
+
+            <div class="col-12 col-md-4 col-lg-4">
+
+                <article class="card quest-card  shadow-sm">
+
+                    <img
+                        src="{{ url_for('static', filename=session.quest_img) }}"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3 gold">{{session.title}}</h5>
+                        <p class="badge-gold p-1"> Start time:
+                            {{session.start_time}}</p>
+
+                        <div
+                            class="row p-3 justify-content-between align-items-center">
+                            <span class="quest-duration col-md-3 }}">
+                                {{session.duration_min}} min
+                            </span>
+
+                            <span
+                                class="quest-type col-md-4 badge-{{ session.type }}">
+                                {{session.quest_type}}
+                            </span>
+
+                            <span
+                                class="quest-info col-md-4 badge-{{ session.difficulty }}">
+                                {{session.difficulty}}
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="{{ url_for('quest_session', session_id=session.id) }}"
+                            class="btn btn-details d-block mt-2">Details</a>
+                    </div>
+
+                </article>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}

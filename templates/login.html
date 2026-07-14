@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+
+    <div class="col-12 col-md-6 col-lg-4">
+        
+        <div class="login-card card shadow-sm">
+            
+            <div class="card-body p-4">
+
+                <h3 class="gold-light text-center mb-4">Sign-in</h3>
+
+                <form action="/authenticate" method="post">
+                    
+                    <div class="mb-3">
+                        <label for="txt_email" class="form-label gold-light">Email</label>
+                        <input type="email" class="form-control" name="txt_email" 
+                               id="txt_email" placeholder="Insert your Email" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="txt_password" class="form-label gold-light">Password</label>
+                        <input type="password" class="form-control" name="txt_password" 
+                               id="txt_password" placeholder="Insert your Password" required />
+                    </div>
+
+                    
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-gold w-100">Login</button>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <small>
+                            Not registered? <a href="{{ url_for('signup') }}" class="text-decoration-none gold-light fw-bold">Sign up here</a>
+                        </small>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

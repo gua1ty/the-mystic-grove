@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="purple-dark text-center mb-2"> - GUILD COUNCIL PROFILE - </h1>
+
+<div class="col-md-7">
+
+    <div class="row text-center mb-3">
+        <div class="col-md-4 mb-3">
+            <div
+                class="council-card card h-100 d-flex justify-content-center align-items-center p-2">
+                <p class="mb-0 stat-text">{{ stats.total_adventurers }}</p>
+                <p class="mb-0 gold-light text-uppercase">Total
+                    adventurers</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div
+                class="council-card card h-100 d-flex justify-content-center align-items-center p-2">
+                <p class="mb-0 stat-text">{{ stats.total_quests }}</p>
+                <p class="mb-0 gold-light text-uppercase">Total quests</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div
+                class="council-card card h-100 d-flex justify-content-center align-items-center p-2">
+                <p class="mb-0 stat-text">{{ stats.total_sessions }}</p>
+                <p class="mb-0 gold-light text-uppercase">Total sessions</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div
+                class="council-card card h-100 d-flex justify-content-center align-items-center p-2">
+                <p class="mb-0 stat-text">{{ stats.total_participations }}</p>
+                <p class="mb-0 gold-light text-uppercase">Participations</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div
+                class="council-card card h-100 d-flex flex-column justify-content-center align-items-center p-2">
+                <p class="mb-0"><strong>Warrior:</strong> {{
+                    stats.total_places_per_role.warrior }}</p>
+                <p class="mb-0"><strong>Mage:</strong> {{
+                    stats.total_places_per_role.mage }}</p>
+                <p class="mb-0"><strong>Healer:</strong> {{
+                    stats.total_places_per_role.healer }}</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div
+                class="council-card card h-100 d-flex justify-content-center align-items-center p-2">
+                <h5 class="mb-0">{{ stats.most_popular_type | capitalize
+                    }}</h5>
+                <p class="mb-0 gold-light text-uppercase">Top Quest Type</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="council-card card mb-4">
+        <div class="card-body">
+            <h3 class="gold-light  mb-4">REGISTERED ADVENTURERS</h3>
+
+            <div class="row fw-bold border-bottom pb-2 mb-2 text-muted">
+                <div class="col-4 gold-light">USERNAME</div>
+                <div class="col-6 gold-light">EMAIL</div>
+                <div class="col-2 text-center gold-light">PART.</div>
+            </div>
+
+            {% for adv in adventurers %}
+            <div class="row align-items-center border-bottom pb-2 pt-2">
+                <div class="col-4 fw-bold">
+                    {{ adv.username }}
+                </div>
+                <div class="col-6">
+                    {{ adv.email }}
+                </div>
+                <div class="col-2 text-center  fw-bold">
+                    <span class="badge badge-gold p-1"> {{
+                        adv.participation_count
+                        }} </span>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-center text-muted mt-3">No adventurers registered
+                yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if stats.busiest_sessions %}
+
+    <div class="council-card card d-flex flex-column p-3 mb-4 gap-2">
+        
+        <div class="text-center mb-2">
+            <span class="gold-light fw-bold fs-5">Busiest Session(s)</span>
+        </div>
+        
+        {% for session in stats.busiest_sessions %}
+        <div class="d-flex flex-row justify-content-around align-items-center w-100 mb-2">
+            <span class="fw-bold">{{ session.day | capitalize }} - {{ session.start_time }}</span>
+            <span>{{ session.location }}</span>
+            <span class="badge badge-gold">Places: {{ stats.busiest_session_places }}</span>
+        </div>
+        {% endfor %}
+        
+    </div>
+
+    {% endif %}
+
+</div>
+
+<div class="col-md-5">
+    <div class="card council-weekly-session-card h-100 mb-5">
+        <div class="card-body">
+            <h4 class="gold mb-4">WEEKLY SCHEDULE & DETAILS</h4>
+
+            {% for quest in quests %}
+            <h5 class="gold mb-1 mt-4">{{ quest.title }} </h5>
+            <h6 class="gold fw-bold">({{ quest.quest_type | capitalize }} ·
+                {{ quest.difficulty | capitalize }})</h6>
+
+            {% for session in quest.sessions %}
+            <div class="session-council mb-2 pb-2 pt-2">
+                <div class=" d-flex align-items-center">
+                    <span class="badge-gold ps-1 pe-1 me-4">{{ session.day |
+                        capitalize }} - {{ session.start_time }}</span>
+                    <span class=" pe-1 me-4"> {{ session.location }}</span>
+
+                </div>
+
+                <div class="mt-1">
+                    <p class=" mb-0">
+                        Warrior: {{ session.taken_places.warrior }}/4 -
+                        Mage: {{ session.taken_places.mage }}/3 -
+                        Healer: {{ session.taken_places.healer }}/2
+                    </p>
+                </div>
+            </div>
+            {% else %}
+            <p class=" mb-0">No sessions scheduled for this quest.</p>
+            {% endfor %}
+
+            {% else %}
+            <p class="text-center  mt-3">No quests created yet.</p>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
