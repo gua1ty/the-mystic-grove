@@ -55,7 +55,8 @@
                                     <button type="submit"
                                         class="btn btn-sm btn-outline-danger">Disenroll</button>
                                 </form>
-
+                                {% else %}
+                                    <small class="text-muted">Locked (less than 8h to start)</small>                         
                                 {% endif %}
 
                                 

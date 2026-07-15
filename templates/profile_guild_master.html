@@ -206,6 +206,8 @@
                             <button type="submit"
                                 class="btn btn-sm btn-outline-danger">Delete</button>
                         </form>
+                        {% else %}
+                        <small class="text-muted">Locked (someone already joined)</small>
                         {% endif %}
                     </div>
                 </div>
