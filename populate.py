@@ -23,8 +23,7 @@ def populate_db():
         ('Zephyr', 'zephyr@windsong.com', generate_password_hash('password'), 'adventurer'), 
         ('Lyra', 'lyra@moonglow.com', generate_password_hash('password'), 'adventurer'), 
         ('Sylas', 'sylas@deepwoods.com', generate_password_hash('password'), 'adventurer'), 
-        ('Cami', 'cami@burri.com', generate_password_hash('password'), 'adventurer'),
-        
+        ('Willow', 'willow@sunlitgrove.net', generate_password_hash('password'), 'adventurer'),        
         ('GuildCouncil', 'council@guild.com', generate_password_hash('council123'), 'guild_council'),
      
     ]
@@ -81,10 +80,10 @@ def populate_db():
     ''', sessions_data)
 
     enrollments_data = [
-        (2, 1, 'warrior', 2),  
-        (3, 1, 'warrior', 2),  
-        (4, 2, 'mage', 1),     
-        (5, 3, 'healer', 1),   
+    (2, 1, 'warrior', 2),   # Zephyr — Monday 10:00, ormai passata (non modificabile)
+    (3, 1, 'warrior', 2),   # Lyra — stessa sessione, ruolo Warrior ora COMPLETO (4/4)
+    (4, 4, 'mage', 1),      # Sylas — Tuesday 16:00, tra 6h: dentro le 8h di blocco (non modificabile, ma sessione ancora futura)
+    (5, 5, 'healer', 1),    # Willow — Wednesday 11:00, tra 25h: OLTRE le 8h (modificabile!)
     ]
     cursor.executemany('''
         INSERT INTO enrollments (user_id, session_id, class, places)

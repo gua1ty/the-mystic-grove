@@ -14,7 +14,6 @@ def new_session(p_quest_id, p_day, p_start_time, p_location):
     cursor.close()
     conn.close()
 
-
         
 def get_all_sessions():
     query = """
@@ -41,7 +40,6 @@ def get_all_sessions():
     cursor.close()
     conn.close()
     return sessions
-
 
 
 def get_sessions_by_id(p_id):

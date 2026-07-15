@@ -20,8 +20,8 @@ login_manager.init_app(app)
 
 #Lists and dictionary for validation
 SIMULATED_CURRENT_TIME = {
-    "day": "wednesday",
-    "time": "14:00"
+    "day": "tuesday",
+    "time": "10:00"
 }
 
 VALID_ROLES = ['warrior', 'mage', 'healer']
