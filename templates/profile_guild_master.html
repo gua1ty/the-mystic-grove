@@ -2,303 +2,318 @@
 
 {% block content %}
 
-<h1 class="purple card-title text-center mb-4"> - GUILD MASTER PROFILE - </h1>
+<header class="col-12">
+    <h1 class="purple-light text-center mb-2"> - GUILD MASTER PROFILE - </h1>
+</header>
 
-<div class="row">
 
-    <div class="col-md-4">
-        <div
-            class="quest-creation-card card  align-items-center">
-            <div class="card-body col-md-11">
-                <h2 class="card-title text-center mb-3"> Create a new quest
-                </h2>
 
-                <form action="/create_new_quest" method="post"
-                    enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="txt_title" class="form-label">Title</label>
-                        <input type="text"
-                            class="form-control form-control-purple"
-                            name="txt_title"
-                            id="txt_title"
-                            placeholder="Insert the quest title" minlength="3"
-                            maxlength="50" required />
+<!-- Create new quest-->
+
+
+<div class="col-md-4">
+    <div
+        class="quest-creation-card card align-items-center">
+        <div class="card-body col-md-11">
+            <h2 class="card-title text-center mb-3"> Create a new quest
+            </h2>
+
+            <form action="/create_new_quest" method="post"
+                enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="txt_title" class="form-label">Title</label>
+                    <input type="text"
+                        class="form-control form-control-purple"
+                        name="txt_title"
+                        id="txt_title"
+                        placeholder="Insert the quest title" minlength="3"
+                        maxlength="50" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="txt_duration" class="form-label">Duration
+                        (min)</label>
+                    <input type="number"
+                        class="form-control form-control-purple"
+                        name="txt_duration" id="txt_duration"
+                        placeholder="Insert duration in minutes" min="1"
+                        max="600" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="txt_difficulty"
+                        class="form-label">Difficulty</label>
+                    <select name="txt_difficulty" id="txt_difficulty"
+                        class="form-select form-select-purple" required>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="legendary">Legendary</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txt_type"
+                        class="form-label">Type</label>
+                    <select name="txt_type" id="txt_type"
+                        class="form-select form-select-purple" required>
+                        <option value="combat">Combat</option>
+                        <option value="exploration">Exploration</option>
+                        <option value="puzzle">Puzzle</option>
+                        <option value="stealth">Stealth</option>
+                        <option value="magic">Magic</option>
+                        <option value="survival">Survival</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txt_description"
+                        class="form-label">Description</label>
+                    <textarea class="form-control form-control-purple"
+                        id="txt_description"
+                        name="txt_description" rows="4"
+                        minlength="10" maxlength="500" required></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="quest_img" class="form-label">Choose the
+                        image for your quest</label>
+                    <input class="form-control form-control-purple"
+                        type="file" id="quest_img"
+                        name="quest_img"
+                        accept="image/png, image/jpeg" required>
+                </div>
+
+                <button type="submit" class="btn btn-gold"> Create quest
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-8">
+
+    <!-- Create new session-->
+
+    <div
+        class="session-creation-card card justify-content-between align-items-center mb-3">
+        <div class="card-body col-md-12">
+            <h2 class="card-title text-center mb-2"> Schedule a new
+                session</h2>
+
+            <form action="/schedule_new_session" method="post">
+
+                <div class="row align-items-end">
+
+                    <div class="col-md-3">
+                        <label for="txt_quest_id"
+                            class="form-label">Choose quest</label>
+                        <select name="txt_quest_id" id="txt_quest_id"
+                            class="form-select form-select-purple" required>
+                            <option value selected disabled>Select a
+                                quest</option>
+                            {% for quest in quests %}
+                            <option value="{{ quest.id }}">{{ quest.title
+                                }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="txt_duration" class="form-label">Duration
+                    <div class="col-md-2">
+                        <label for="txt_day"
+                            class="form-label ">Day:</label>
+                        <select name="txt_day" id="txt_day"
+                            class="form-select form-select-purple">
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                            <option value="saturday">Saturday</option>
+                            <option value="sunday">Sunday</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="start_time" class="form-label">Hour
                             (min)</label>
-                        <input type="number"
+                        <input type="time"
                             class="form-control form-control-purple"
-                            name="txt_duration" id="txt_duration"
-                            placeholder="Insert duration in minutes" min="1"
-                            max="600" required />
+                            name="start_time" id="start_time" required />
                     </div>
 
-                    <div class="mb-3">
-                        <label for="txt_difficulty"
-                            class="form-label">Difficulty</label>
-                        <select name="txt_difficulty" id="txt_difficulty"
+                    <div class="col-md-3">
+                        <label for="location"
+                            class="form-label">Location</label>
+                        <select name="location" id="location"
                             class="form-select form-select-purple" required>
-                            <option value="easy">Easy</option>
-                            <option value="medium">Medium</option>
-                            <option value="hard">Hard</option>
-                            <option value="legendary">Legendary</option>
+                            <option value="Whispering Hollow">Whispering
+                                Hollow</option>
+                            <option value="Moonlit Wood">Moonlit Wood</option>
+                            <option value="Mystic Tower">Mystic Tower</option>
                         </select>
+
                     </div>
 
-                    <div class="mb-3">
-                        <label for="txt_type"
-                            class="form-label">Type</label>
-                        <select name="txt_type" id="txt_type"
-                            class="form-select form-select-purple" required>
-                            <option value="combat">Combat</option>
-                            <option value="exploration">Exploration</option>
-                            <option value="puzzle">Puzzle</option>
-                            <option value="stealth">Stealth</option>
-                            <option value="magic">Magic</option>
-                            <option value="survival">Survival</option>
-                        </select>
-                    </div>
+                    <div class="col-md-2 text-end">
 
-                    <div class="mb-3">
-                        <label for="txt_description"
-                            class="form-label">Description</label>
-                        <textarea class="form-control form-control-purple"
-                            id="txt_description"
-                            name="txt_description" rows="4"
-                            minlength="10" maxlength="500" required></textarea>
-                    </div>
+                        <button type="submit" class="btn btn-gold"> submit
+                        </button>
 
-                    <div class="mb-4">
-                        <label for="quest_img" class="form-label">Choose the
-                            image for your quest</label>
-                        <input class="form-control form-control-purple"
-                            type="file" id="quest_img"
-                            name="quest_img"
-                            accept="image/png, image/jpeg" required>
                     </div>
-
-                    <button type="submit" class="btn btn-gold"> Create quest
-                    </button>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 
-    <div class="col-md-8">
-        <div
-            class="session-creation-card card justify-content-between align-items-center mb-3">
-            <div class="card-body col-md-12">
-                <h2 class="card-title text-center mb-2"> Schedule a new
-                    session</h2>
+    
+    <!-- Session list-->
 
-                <form action="/schedule_new_session" method="post">
+    <div
+        class=" session-list card justify-content-between align-items-center mb-5">
+        <div class="card-body  col-md-11">
+            <h3 class="purple-light text-center mb-4">Your Sessions</h3>
 
-                    <div class="row align-items-end">
+            {% for quest in quests %}
+            <h5 class="purple-light mb-3 mt-3 ">{{ quest.title }}</h5>
 
-                        <div class="col-md-3">
-                            <label for="txt_quest_id"
-                                class="form-label">Choose quest</label>
-                            <select name="txt_quest_id" id="txt_quest_id"
-                                class="form-select form-select-purple" required>
-                                <option value selected disabled>Select a
-                                    quest</option>
-                                {% for quest in quests %}
-                                <option value="{{ quest.id }}">{{ quest.title
-                                    }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+            {% for session in quest.sessions %}
+            <div
+                class="session-container mb-3 border-bottom pb-2 ">
 
-                        <div class="col-md-2">
-                            <label for="txt_day"
-                                class="form-label ">Day:</label>
-                            <select name="txt_day" id="txt_day"
-                                class="form-select form-select-purple">
-                                <option value="monday">Monday</option>
-                                <option value="tuesday">Tuesday</option>
-                                <option value="wednesday">Wednesday</option>
-                                <option value="thursday">Thursday</option>
-                                <option value="friday">Friday</option>
-                                <option value="saturday">Saturday</option>
-                                <option value="sunday">Sunday</option>
-                            </select>
-
-                        </div>
-
-                        <div class="col-md-2">
-                            <label for="start_time" class="form-label">Hour
-                                (min)</label>
-                            <input type="time"
-                                class="form-control form-control-purple"
-                                name="start_time" id="start_time" required />
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="location"
-                                class="form-label">Location</label>
-                            <select name="location" id="location"
-                                class="form-select form-select-purple" required>
-                                <option value="Dungeon Hall">Dungeon
-                                    Hall</option>
-                                <option value="Enchanted Forest">Enchanted
-                                    Forest</option>
-                                <option value="Wizard Tower">Wizard
-                                    Tower</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-2 text-end">
-
-                            <button type="submit" class="btn btn-gold"> submit
-                            </button>
-
-                        </div>
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <span class="ps-3 ">{{ session.day | capitalize }} -
+                            {{ session.start_time }} - {{ quest.duration_min}}
+                            min</span>
                     </div>
-                </form>
-            </div>
-        </div>
-        <div
-            class=" session-list card justify-content-between align-items-center mb-5">
-            <div class="card-body  col-md-11">
-                <h3 class="purple-light text-center mb-4">Your Sessions</h3>
-
-                {% for quest in quests %}
-                <h5 class="purple-light mb-3 mt-3 ">{{ quest.title }}</h5>
-
-                {% for session in quest.sessions %}
-                <div
-                    class="session-container mb-3 border-bottom pb-2 ">
-
-                    <div class="row align-items-center">
-                        <div class="col-4">
-                            <span class="ps-3 ">{{ session.day | capitalize }} -
-                                {{ session.start_time }} - {{ quest.duration_min}} min</span>
-                        </div>
-                        <div class="col-4">
-                            <span>Location: {{ session.location }}</span>
-                        </div>
-                        <div class="col-4 text-end pe-5">
-                            {% set total_taken = session.taken_places.warrior +
-                            session.taken_places.mage +
-                            session.taken_places.healer %}
-                            {% if total_taken == 0 %}
-                            <button type="button"
-                                onclick="toggleEditForm({{ session.id }})"
-                                class="btn btn-sm btn-purple">Modify</button>
-                            <form
-                                action="{{ url_for('delete_session', session_id=session.id) }}"
-                                method="post"
-                                class="d-inline">
-                                <button type="submit"
-                                    class="btn btn-sm btn-outline-danger">Delete</button>
-                            </form>
-                            {% endif %}
-                        </div>
+                    <div class="col-4">
+                        <span>Location: {{ session.location }}</span>
                     </div>
-
-                    <div class="row mt-1 mb-2">
-                        <div class="col-12">
-                            <small class="text-muted ps-3">
-                                <span class="pe-3 ">Warrior: {{
-                                    session.taken_places.warrior }}/4</span>
-                                <span class="pe-3">Mage: {{
-                                    session.taken_places.mage }}/3</span>
-                                <span>Healer: {{ session.taken_places.healer
-                                    }}/2
-                                </span>
-                                {% if total_taken != 0 %}
-                                <span class="ps-5">
-                                    Most required role:
-                                    {{session.most_requested_role
-                                    }}
-                                </span>
-
-                                {% endif %}
-
-                            </small>
-                        </div>
-                    </div>
-
-                    <div id="edit-form-{{ session.id }}"
-                        class="d-none mt-2 p-2">
+                    <div class="col-4 text-end pe-5">
+                        {% set total_taken = session.taken_places.warrior +
+                        session.taken_places.mage +
+                        session.taken_places.healer %}
+                        {% if total_taken == 0 %}
+                        <button type="button"
+                            class="btn btn-sm btn-purple toggle-edit-btn"
+                            data-session-id="{{ session.id }}">Modify</button>
                         <form
-                            action="{{ url_for('edit_session', session_id=session.id) }}"
+                            action="{{ url_for('delete_session', session_id=session.id) }}"
                             method="post"
-                            class="d-flex align-items-end justify-content-around">
-
-                            <div>
-                                <label for="day-{{ session.id }}"
-                                    class="form-label mb-0">Day</label>
-                                <select name="day" id="day-{{ session.id }}"
-                                    class="form-select form-select-purple form-select-sm">
-                                    <option value="monday" {% if session.day ==
-                                        'monday' %}selected{% endif
-                                        %}>Monday</option>
-                                    <option value="tuesday" {% if session.day ==
-                                        'tuesday' %}selected{% endif
-                                        %}>Tuesday</option>
-                                    <option value="wednesday" {% if session.day
-                                        == 'wednesday' %}selected{% endif
-                                        %}>Wednesday</option>
-                                    <option value="thursday" {% if session.day
-                                        == 'thursday' %}selected{% endif
-                                        %}>Thursday</option>
-                                    <option value="friday" {% if session.day ==
-                                        'friday' %}selected{% endif
-                                        %}>Friday</option>
-                                    <option value="saturday" {% if session.day
-                                        == 'saturday' %}selected{% endif
-                                        %}>Saturday</option>
-                                    <option value="sunday" {% if session.day ==
-                                        'sunday' %}selected{% endif
-                                        %}>Sunday</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="start_time-{{ session.id }}"
-                                    class="form-label mb-0"><small>Time</small></label>
-                                <input type="time" name="start_time"
-                                    id="start_time-{{ session.id }}"
-                                    class="form-control form-control-purple form-control-sm"
-                                    value="{{ session.start_time }}">
-                            </div>
-
-                            <div>
-                                <label for="location-{{ session.id }}"
-                                class="form-label">Location</label>
-                            <select name="location" id="location-{{ session.id }}"
-                                class="form-select form-select-purple form-select-sm" required>
-                                <option value="Dungeon Hall" {% if session.location ==
-                                    'Dungeon Hall' %}selected{% endif
-                                    %}>Dungeon
-                                    Hall</option>
-                                <option value="Enchanted Forest" {% if session.location ==
-                                    'Enchanted Forest' %}selected{% endif
-                                    %}>Enchanted
-                                    Forest</option>
-                                <option value="Wizard Tower" {% if session.location ==
-                                    'Wizard Tower' %}selected{% endif
-                                    %}>Wizard
-                                    Tower</option>
-                            </select>
-                            </div>
-
+                            class="d-inline">
                             <button type="submit"
-                                class="btn  btn-gold">Submit</button>
+                                class="btn btn-sm btn-outline-danger">Delete</button>
                         </form>
+                        {% endif %}
                     </div>
                 </div>
 
-                {% endfor %}
-                {% endfor %}
+                <div class="row mt-1 mb-2">
+                    <div class="col-12">
+                        <small class="text-muted ps-3">
+                            <span class="pe-3 ">Warrior: {{
+                                session.taken_places.warrior }}/4</span>
+                            <span class="pe-3">Mage: {{
+                                session.taken_places.mage }}/3</span>
+                            <span>Healer: {{ session.taken_places.healer
+                                }}/2
+                            </span>
+                            {% if total_taken != 0 %}
+                            <span class="ps-5">
+                                Most required role:
+                                {{session.most_requested_role
+                                }}
+                            </span>
 
+                            {% endif %}
+
+                        </small>
+                    </div>
+                </div>
+
+                
+                <!-- Modify sessione form-->
+
+
+                <div id="edit-form-{{ session.id }}"
+                    class="d-none mt-2 p-2">
+                    <form
+                        action="{{ url_for('edit_session', session_id=session.id) }}"
+                        method="post"
+                        class="d-flex align-items-end justify-content-around">
+
+                        <div>
+                            <label for="day-{{ session.id }}"
+                                class="form-label mb-0">Day</label>
+                            <select name="day" id="day-{{ session.id }}"
+                                class="form-select form-select-purple form-select-sm">
+                                <option value="monday" {% if session.day ==
+                                    'monday' %}selected{% endif
+                                    %}>Monday</option>
+                                <option value="tuesday" {% if session.day ==
+                                    'tuesday' %}selected{% endif
+                                    %}>Tuesday</option>
+                                <option value="wednesday" {% if session.day
+                                    == 'wednesday' %}selected{% endif
+                                    %}>Wednesday</option>
+                                <option value="thursday" {% if session.day
+                                    == 'thursday' %}selected{% endif
+                                    %}>Thursday</option>
+                                <option value="friday" {% if session.day ==
+                                    'friday' %}selected{% endif
+                                    %}>Friday</option>
+                                <option value="saturday" {% if session.day
+                                    == 'saturday' %}selected{% endif
+                                    %}>Saturday</option>
+                                <option value="sunday" {% if session.day ==
+                                    'sunday' %}selected{% endif
+                                    %}>Sunday</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="start_time-{{ session.id }}"
+                                class="form-label mb-0"><small>Time</small></label>
+                            <input type="time" name="start_time"
+                                id="start_time-{{ session.id }}"
+                                class="form-control form-control-purple form-control-sm"
+                                value="{{ session.start_time }}">
+                        </div>
+
+                        <div>
+                            <label for="location-{{ session.id }}"
+                                class="form-label">Location</label>
+                            <select name="location"
+                                id="location-{{ session.id }}"
+                                class="form-select form-select-purple form-select-sm"
+                                required>
+                                <option value="Whispering Hollow" {% if
+                                    session.location == 'Whispering Hollow'
+                                    %}selected{% endif %}>Whispering
+                                    Hollow</option>
+                                <option value="Moonlit Wood" {% if
+                                    session.location == 'Moonlit Wood'
+                                    %}selected{% endif %}>Moonlit Wood</option>
+                                <option value="Mystic Tower" {% if
+                                    session.location == 'Mystic Tower'
+                                    %}selected{% endif %}>Mystic Tower</option>
+                            </select>
+                        </div>
+
+                        <button type="submit"
+                            class="btn  btn-gold">Submit</button>
+                    </form>
+                </div>
             </div>
-        </div>
 
+            {% endfor %}
+            {% endfor %}
+
+        </div>
     </div>
+
 </div>
 
 {% endblock %}

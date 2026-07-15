@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="quest-info col-md-7 me-5">
-    <h2 class="col-12 text-center mb-4 purple-header-box">
+    <h2 class="col-12 text-center mb-4 badge-gold p-1">
         {{session.title}}</h2>
 
     <div class=" text-center">
@@ -15,7 +15,7 @@
     <div class=" text-center">
 
         <p class=" badge-gold p-1 fw-semibold"> {{ session.day | capitalize
-            }} - {{ session.start_time }} {{ session.location }}</p>
+            }} - {{ session.start_time }} - {{ session.location }}</p>
     </div>
 
     <p class="card-text pt-2 ps-3 pe-3"> {{session.description}} </p>
@@ -29,7 +29,7 @@
         </span>
 
         <span
-            class="quest-type p-1 col-md-4 text-center badge-{{ session.type }}">
+            class="quest-type p-1 col-md-4 text-center">
             Quest type: <br>{{session.quest_type}}
         </span>
 
@@ -153,7 +153,7 @@
                         %}>
                         <label class="btn  custom-radio-btn w-100 py-2"
                             for="role_healer">
-                            Healer {% if session.places.healer >= 2 %}(pieno){%
+                            Healer {% if session.places.healer >= 2 %}(full){%
                             endif %}
                         </label>
                     </div>

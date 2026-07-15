@@ -36,21 +36,24 @@
                         Grove</span>
                 </a>
 
-                <ul class="nav nav-pills align-items-center">
-                    <li class="nav-item me-1">
-                        <a href="{{ url_for('home') }}"
-                            class="nav-link link-body-emphasis">Quest Board</a>
-                    </li>
+                <nav>
 
-                    {% if not current_user.is_authenticated %}
-                    <li class="nav-item"><a href="{{ url_for('login') }}"
-                            class="nav-link btn-login-purple ">Login</a></li>
-                    <li class="nav-item"><a href="{{ url_for('signup') }}"
-                            class="nav-link btn-register">Register</a></li>
-                    {% else %}
-                    <li class="nav-item">
+                    <ul class="nav nav-pills align-items-center">
+                        <li class="nav-item me-1">
+                            <a href="{{ url_for('home') }}"
+                                class="nav-link link-body-emphasis">Quest
+                                Board</a>
+                        </li>
 
-                        <a href="
+                        {% if not current_user.is_authenticated %}
+                        <li class="nav-item"><a href="{{ url_for('login') }}"
+                                class="nav-link btn-login-purple ">Login</a></li>
+                        <li class="nav-item"><a href="{{ url_for('signup') }}"
+                                class="nav-link btn-register">Register</a></li>
+                        {% else %}
+                        <li class="nav-item">
+
+                            <a href="
                         {% if current_user.role == 'adventurer' %}
                             {{ url_for('profile_user') }}
                         {% elif current_user.role == 'guild_master' %}
@@ -58,15 +61,17 @@
                         {% else %}
                             {{ url_for('profile_council') }}
                         {% endif %}"
-                            class="nav-link btn-register fw-bold"> Your profile
-                        </a>
-                    </li>
-                    <li class="nav-item ms-2">
-                        <a href="{{ url_for('logout') }}"
-                            class="btn btn-outline-danger btn-sm">Logout</a>
-                    </li>
-                    {% endif %}
-                </ul>
+                                class="nav-link btn-register fw-bold"> Your
+                                profile
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a href="{{ url_for('logout') }}"
+                                class="btn btn-outline-danger btn-sm">Logout</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </header>
 
             <div class="container-fluid mt-2">
@@ -90,8 +95,8 @@
                 {% endblock %}
             </main>
 
-        </div> 
-        
+        </div>
+
         <footer class="mt-auto border-top bg-body-tertiary">
             <div class="container py-4 text-center">
                 <span class="text-body-secondary">© 2026 The Mystic

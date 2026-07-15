@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2 class="text-center gold">YOUR PROFILE</h3>
+<header class="col-12">
+    <h2 class="text-center gold">YOUR PROFILE</h2>
+    <h4 class="mb-1 gold">You enrolled to {{enrolled_count}}/3 sessions</h4>
+</header>
 
-<h4 class="mb-1 gold">You enrolled to {{enrolled_count}}/3 sessions</h3>
 
 <div class="enrollments-container">
 
-   
+    <!-- Enrollments list-->
+
     {% for enrollment in enrollments %}
 
-    <div class="card quest-card mb-3 col-md-12">
+    <div class="col-12 card quest-card mb-3 col-md-12">
         <div class="row g-0">
             <div class="col-md-2">
                 <img src="{{ url_for('static', filename=enrollment.quest_img) }}"
@@ -20,38 +23,37 @@
 
             <div class="col-md-9 ps-2">
                 <div class="card-body p-4">
-                    <h4 class="mb-3 gold">{{ enrollment.title }}</h4>
+                    <h4 class="mb-3 gold">
+                        <a href="{{ url_for('quest_session', session_id=enrollment.session_id) }}" class="text-decoration-none gold">
+                            {{ enrollment.title }}
+                        </a>
+                   </h4>
 
-                    <div class=" ">
                         <div class="row align-items-center mb-3">
                             <div class="col-md-8">
                                 <span
                                     class=" badge-gold p-1 fw-semibold me-4 ">{{
                                     enrollment.day | capitalize }} - {{
                                     enrollment.start_time }} - {{
-                                    enrollment.location }} </span>
-                                <span class=" me-4 p-1 ">
-                                    {{enrollment.quest_type | capitalize}}
-                                </span>
-
-                                <span
-                                    class="p-1 me-4 badge-{{enrollment.difficulty}}">{{
-                                    enrollment.difficulty | capitalize }}</span>
+                                    enrollment.location }} </span> 
 
                             </div>
 
                             <div class="col-md-4 text-end">
+
                                 {% if enrollment.can_be_modified %}
-                                <button type="button"
-                                    onclick="toggleEditForm({{ enrollment.session_id }})"
-                                    class=" btn-purple btn btn-sm">Modify</button>
+                                <button type="button" class="btn btn-sm btn-purple toggle-edit-btn" data-session-id="{{ enrollment.session_id }}">Modify</button>
+
                                 <form
                                     action="{{ url_for('delete_enrollment', session_id=enrollment.session_id, id = enrollment.id) }}"
                                     method="post" class="d-inline">
                                     <button type="submit"
                                         class="btn btn-sm btn-outline-danger">Disenroll</button>
                                 </form>
+
                                 {% endif %}
+
+                                
                             </div>
                         </div>
 
@@ -74,15 +76,18 @@
                                 {{enrollment.taken_places.warrior }}/4</span>
                             <span class="  me-4"> <img
                                     src="{{ url_for('static', filename='images/mage_icon.png') }}"
-                                    alt="Warrior" class="class-icon-small">
+                                    alt="Mage" class="class-icon-small">
                                 {{
                                 enrollment.taken_places.mage }}/3</span>
                             <span class="  "><img
                                     src="{{ url_for('static', filename='images/healer_icon.png') }}"
-                                    alt="Warrior"
+                                    alt="Healer"
                                     class="class-icon-small pe-2">{{
                                 enrollment.taken_places.healer }}/2</span>
                         </div>
+
+                        
+                        <!-- Modify enrollment form-->
 
                         {% if enrollment.can_be_modified %}
                         <div id="edit-form-{{ enrollment.session_id }}"
@@ -131,7 +136,6 @@
                         </div>
                         {% endif %}
 
-                    </div>
 
                 </div>
             </div>

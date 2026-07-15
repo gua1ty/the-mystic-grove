@@ -22,7 +22,7 @@ SIMULATED_CURRENT_TIME = {
 
 VALID_ROLES = ['warrior', 'mage', 'healer']
 
-VALID_LOCATIONS = ["Dungeon Hall", "Enchanted Forest", "Wizard Tower"]
+VALID_LOCATIONS = ["Whispering Hollow", "Moonlit Wood", "Mystic Tower"]
 
 VALID_DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
@@ -81,26 +81,26 @@ def signup():
     return render_template("registration.html")
 
 
-@app.route("/register", methods = ["POST"])
+@app.route("/register", methods=["POST"])
 def register():
     username = request.form.get("txt_username")
     email = request.form.get("txt_email")
+    password = request.form.get("txt_password")
 
     if not username or not email or not password:
-        flash("Please fill all fields", "warning")
+        flash("Please fill all fields.", "warning")
         return redirect(url_for("signup"))
-    
+
     existing_user = users_dao.get_user_by_email(email)
     if existing_user:
-        flash("Email already registered", "danger")
+        flash("Email already registered.", "danger")
         return redirect(url_for("signup"))
-    
-    password = generate_password_hash(request.form.get("txt_password"))
 
-    users_dao.new_user(username, email, password, "adventurer")
+    hashed_password = generate_password_hash(password)
+    users_dao.new_user(username, email, hashed_password, "adventurer")
 
-    return redirect(url_for("home"))
-
+    flash("Registration successful! You can now log in.", "success")
+    return redirect(url_for("login"))
 
 @app.route("/login")
 def login():
@@ -132,7 +132,7 @@ def authenticate():
             role = db_user["role"],
         )
 
-        result = login_user(new)
+        login_user(new)
         flash("Welcome back! " + db_user["username"], "success")
     
     return redirect(url_for("home"))
@@ -142,6 +142,9 @@ def authenticate():
 def logout():
     logout_user()
     return redirect(url_for("home"))
+
+
+#home route
 
 
 @app.route('/')
@@ -191,7 +194,7 @@ def home():
     return render_template('index.html', sessions_order_by_day=sessions_order_by_day)
 
 
-#quest enrollment
+#quest details route and enrollments manager
 
 @app.route("/session_details/<int:session_id>")
 def quest_session(session_id):
@@ -235,7 +238,11 @@ def enroll(session_id):
         return redirect(url_for('quest_session', session_id=session_id))
        
 
-    db_session = quest_sessions_dao.get_sessions_by_id(session_id)  
+    db_session = quest_sessions_dao.get_sessions_by_id(session_id)
+
+    if db_session is None:
+        flash("Session not found.", "danger")
+        return redirect(url_for('home'))
 
 
     current_minutes = day_time_to_minutes(SIMULATED_CURRENT_TIME['day'], SIMULATED_CURRENT_TIME['time'])
@@ -405,6 +412,14 @@ def schedule_new_session():
 
     new_session_duration = quest['duration_min']
 
+    current_minutes = day_time_to_minutes(SIMULATED_CURRENT_TIME['day'], SIMULATED_CURRENT_TIME['time'])
+    new_session_minutes = day_time_to_minutes(day, start_time)
+
+    if new_session_minutes <= current_minutes:
+        flash("You cannot schedule a session in the past.", "danger")
+        return redirect(url_for('profile_master'))
+
+
     existing_sessions_same_location = quest_sessions_dao.get_sessions_by_location(location)
 
     for existing in existing_sessions_same_location:
@@ -463,6 +478,14 @@ def edit_session(session_id):
     quest = quests_dao.get_quest_by_id(session_to_edit['quest_id'])
     session_duration = quest['duration_min']
 
+    current_minutes = day_time_to_minutes(SIMULATED_CURRENT_TIME['day'], SIMULATED_CURRENT_TIME['time'])
+    new_session_minutes = day_time_to_minutes(day, start_time)
+
+    if new_session_minutes <= current_minutes:
+        flash("You cannot move a session to the past.", "danger")
+        return redirect(url_for('profile_master'))
+
+
     existing_sessions_same_location = quest_sessions_dao.get_sessions_by_location(location)
 
     for existing in existing_sessions_same_location:
@@ -494,6 +517,8 @@ def delete_session(session_id):
         return redirect(url_for('home'))
     
     session_to_delete = quest_sessions_dao.get_sessions_by_id(session_id)
+
+    
     if not session_to_delete:
         flash("Session not found.", "danger")
         return redirect(url_for('profile_master'))
@@ -584,14 +609,14 @@ def edit_enrollment(session_id):
 
 
     if new_places < 1 or new_places > 2:
-        flash("Puoi prenotare solo 1 o 2 posti.", "danger")
+        flash("You can only reserve 1 or 2 places.", "danger")
         return redirect(url_for('profile_user'))
 
   
     current_enrollment = enrollments_dao.get_enrollment_for_user_session(current_user.id, session_id)
 
     if not current_enrollment or current_enrollment['user_id'] != current_user.id:
-        flash("Iscrizione non trovata.", "danger")
+        flash("Enrollment not found.", "danger")
         return redirect(url_for('profile_user'))
     
     taken = enrollments_dao.get_places_taken(session_id)
@@ -620,9 +645,12 @@ def delete_enrollment(session_id, id):
     
     enrollment = enrollments_dao.get_enrollment_by_id(id)
 
-    
+    if enrollment['session_id'] != session_id:         
+        flash("Invalid request.", "danger")
+        return redirect(url_for('profile_user'))
+
     if not enrollment or enrollment['user_id'] != current_user.id:
-        flash("Iscrizione non trovata.", "danger")
+        flash("Enrollment not found.", "danger")
         return redirect(url_for('profile_user'))
 
     db_session = quest_sessions_dao.get_sessions_by_id(session_id)
@@ -640,7 +668,7 @@ def delete_enrollment(session_id, id):
         return redirect(url_for('profile_user'))
     
     enrollments_dao.delete_enrollment(id)
-    flash("Iscrizione cancellata con successo!", "success")
+    flash("Enrollment cancelled successfully!", "success")
     return redirect(url_for('profile_user'))
 
 
@@ -669,9 +697,7 @@ def profile_council():
     for e in all_enrollments:
         total_places_per_role[e['class']] += e['places']
 
-    quest_id_to_type = {}
-    for q in all_quests:
-        quest_id_to_type[q['id']] = q['quest_type']
+
 
     most_popular = quests_dao.get_most_popular_quest_type()
 

@@ -60,8 +60,9 @@ def get_all_adventurers():
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query)
-    users = cursor.fetchall()
+    db_users = cursor.fetchall()
+
     cursor.close()
     conn.close()
-    return users
+    return db_users
 
