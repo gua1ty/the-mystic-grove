@@ -24,6 +24,7 @@ def populate_db():
         ('Lyra', 'lyra@moonglow.com', generate_password_hash('password'), 'adventurer'), 
         ('Sylas', 'sylas@deepwoods.com', generate_password_hash('password'), 'adventurer'), 
         ('Willow', 'willow@sunlitgrove.net', generate_password_hash('password'), 'adventurer'),        
+        
         ('GuildCouncil', 'council@guild.com', generate_password_hash('council123'), 'guild_council'),
      
     ]
