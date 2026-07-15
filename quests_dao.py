@@ -2,13 +2,15 @@ import sqlite3
 
 import sqlite3
 
+import os
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "guild.db")
 
 def new_quest(p_title, p_duration_min, p_quest_type, p_difficulty, p_description, p_quest_img):
     query = """
         INSERT INTO quests (title, duration_min, quest_type, difficulty, description, quest_img)
         VALUES (?, ?, ?, ?, ?, ?)
     """
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(query, (p_title, p_duration_min, p_quest_type, p_difficulty, p_description, p_quest_img))
     conn.commit()
@@ -20,7 +22,7 @@ def new_quest(p_title, p_duration_min, p_quest_type, p_difficulty, p_description
 
 def get_all_quests():
     query = "SELECT * FROM quests"
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query)
@@ -39,7 +41,7 @@ def get_most_popular_quest_type():
         ORDER BY total_enrollments DESC
         LIMIT 1
     """
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query)
@@ -51,7 +53,7 @@ def get_most_popular_quest_type():
 
 def get_quest_by_id(p_id):
     query = "SELECT * FROM quests WHERE id = ?"
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query, (p_id,))

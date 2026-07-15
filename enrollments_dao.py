@@ -1,11 +1,15 @@
 import sqlite3
 
+import os
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "guild.db")
+
+
 
 def new_enrollment (p_user_id, p_session_id, p_class, p_places):
 
     query = "INSERT INTO enrollments (user_id, session_id, class, places) VALUES (?, ?, ?, ?)"
 
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     cursor.execute(query, (p_user_id, p_session_id, p_class, p_places))
@@ -35,7 +39,7 @@ def get_enrollments_by_user(p_user_id):
                 s.start_time
             """
     
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query, (p_user_id,))
@@ -49,7 +53,7 @@ def get_enrollment_for_user_session(p_user_id, p_session_id):
         SELECT * FROM enrollments
         WHERE user_id = ? AND session_id = ?
         """
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query, (p_user_id, p_session_id))
@@ -65,7 +69,7 @@ def get_places_taken(p_session_id):
         WHERE session_id = ?
         GROUP BY class
     """
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query, (p_session_id,))
@@ -82,7 +86,7 @@ def get_places_taken(p_session_id):
 def get_enrollment_by_id(p_id):
     query = "SELECT * FROM enrollments WHERE id = ?"
     
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query, (p_id,))
@@ -94,7 +98,7 @@ def get_enrollment_by_id(p_id):
 
 def get_all_enrollments():
     query = "SELECT * FROM enrollments"
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query)
@@ -105,7 +109,7 @@ def get_all_enrollments():
 
 def update_enrollment(p_id, p_class, p_places):
     query = "UPDATE enrollments SET class = ?, places = ? WHERE id = ?"
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(query, (p_class, p_places, p_id))
     conn.commit()
@@ -115,7 +119,7 @@ def update_enrollment(p_id, p_class, p_places):
 
 def delete_enrollment(p_id):
     query = "DELETE FROM enrollments WHERE id = ?"
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(query, (p_id,))
     conn.commit()

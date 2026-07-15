@@ -1,10 +1,13 @@
 import sqlite3
 
 import enrollments_dao   
+import os
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "guild.db")
+
 
 def new_session(p_quest_id, p_day, p_start_time, p_location):
     query = "INSERT INTO quest_sessions (quest_id, day, start_time, location) VALUES (?, ?, ?, ?)"
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(query, (p_quest_id, p_day, p_start_time, p_location))
     conn.commit()
@@ -30,7 +33,7 @@ def get_all_sessions():
             END,
             qs.start_time
     """
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query)
@@ -50,7 +53,7 @@ def get_sessions_by_id(p_id):
         WHERE qs.id = ?  
     """
 
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
@@ -85,7 +88,7 @@ def get_sessions_by_quest_id(p_quest_id):
             END,
             start_time
     """
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query, (p_quest_id,))
@@ -96,9 +99,8 @@ def get_sessions_by_quest_id(p_quest_id):
 
 
 def get_sessions_by_location(p_location):
-    """Tutte le sessioni in una specifica location - per il controllo overlap."""
     query = "SELECT * FROM quest_sessions WHERE location = ?"
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(query, (p_location,))
@@ -110,7 +112,7 @@ def get_sessions_by_location(p_location):
 
 def update_session(p_id, p_day, p_start_time, p_location):
     query = "UPDATE quest_sessions SET day = ?, start_time = ?, location = ? WHERE id = ?"
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(query, (p_day, p_start_time, p_location, p_id))
     conn.commit()
@@ -120,7 +122,7 @@ def update_session(p_id, p_day, p_start_time, p_location):
 
 def delete_session(p_id):
     query = "DELETE FROM quest_sessions WHERE id = ?"
-    conn = sqlite3.connect("guild.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(query, (p_id,))
     conn.commit()

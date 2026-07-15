@@ -6,6 +6,10 @@ from datetime import datetime
 from models import User
 import users_dao, quest_sessions_dao, enrollments_dao, quests_dao
 
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "TheMysticGroveKey" #serve criptografare i cookie
@@ -373,7 +377,8 @@ def create_new_quest():
     img_name = str(secs) + "." + ext
 
     
-    image_file.save("static/images/quest_imgs/" + img_name)
+    image_file.save(os.path.join(BASE_DIR, "static", "images", "quest_imgs", img_name))
+
 
     quests_dao.new_quest(title, duration, quest_type, difficulty, description, "images/quest_imgs/" + img_name)
 
