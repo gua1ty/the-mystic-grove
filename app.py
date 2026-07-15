@@ -40,8 +40,13 @@ DAY_TO_INDEX = {
     "sunday": 6
 }
 
+
+
 #Support functions 
+
+# Converts day (string) and time (HH:MM) to absolute minutes compare time differences
 def day_time_to_minutes(day, time):
+
     day_index = DAY_TO_INDEX[day]
     parts = time.split(":")
     hours = int(parts[0])
@@ -50,6 +55,8 @@ def day_time_to_minutes(day, time):
     return day_index * 24 * 60 + hours *60 + minutes
 
 
+
+# Checks if two sessions overlap by comparing their start and end times in minutes
 def sessions_overlap(day_a, start_a, duration_a, day_b, start_b, duration_b):
     start_a_min = day_time_to_minutes(day_a, start_a)
     end_a_min = start_a_min + duration_a
@@ -153,6 +160,8 @@ def logout():
 
 @app.route('/')
 def home():   
+
+    # Filter sessions based on user selection 
     filter_day = request.args.get('day', 'all')
     filter_type = request.args.get('type', 'all')
     filter_difficulty = request.args.get('difficulty', 'all')
@@ -208,11 +217,16 @@ def quest_session(session_id):
         flash("Session not found.", "danger")
         return redirect(url_for('home'))
     
+
+    # Check if the session is already in the past compared to the simulated current time
+    
     current_minutes = day_time_to_minutes(SIMULATED_CURRENT_TIME['day'], SIMULATED_CURRENT_TIME['time'])
     session_minutes = day_time_to_minutes(db_session['day'], db_session['start_time'])
     
     is_past = (session_minutes <= current_minutes)
 
+
+    # Check if the current adventurer is already enrolled in this session
     is_enrolled = False
     if current_user.is_authenticated and current_user.role == 'adventurer':
         user_current_session_enrollment = enrollments_dao.get_enrollment_for_user_session(current_user.id, session_id)
@@ -225,9 +239,12 @@ def quest_session(session_id):
                            is_enrolled=is_enrolled)
  
 
+
 @app.route('/enroll/<int:session_id>', methods=['POST'])
 @login_required
 def enroll(session_id):
+
+    #backhand check of the requirements
     if current_user.role != 'adventurer':
         flash("Only adventurers can enroll in a session", "danger")
         return redirect(url_for('quest_session', session_id=session_id))
@@ -286,10 +303,12 @@ def enroll(session_id):
 
     user_enrollments = enrollments_dao.get_enrollments_by_user(current_user.id)
 
+    # requirement: Max 3 sessions per week
     if len(user_enrollments) >=3:
         flash("Limit reached: you already enrolled to 3 session for this week","danger" )
         return redirect(url_for('quest_session', session_id=session_id))
-
+    
+    #requirement: overlapping times for the same adventurer
     for e in user_enrollments:
         overlap = sessions_overlap(
             db_session['day'], db_session['start_time'], db_session['duration_min'],
@@ -486,6 +505,8 @@ def edit_session(session_id):
     if not session_to_edit:
         flash("Session not found.", "danger")
         return redirect(url_for('profile_master'))
+    
+    # requirement: Session can be edited ONLY if 0 adventurers joined
 
     taken = enrollments_dao.get_places_taken(session_id)
     total_enrolled = taken['warrior'] + taken['mage'] + taken['healer']
@@ -504,7 +525,7 @@ def edit_session(session_id):
         flash("You cannot move a session to the past.", "danger")
         return redirect(url_for('profile_master'))
 
-
+    # requirement: Overlap ignoring the current session being edited
     existing_sessions_same_location = quest_sessions_dao.get_sessions_by_location(location)
 
     for existing in existing_sessions_same_location:
@@ -542,6 +563,8 @@ def delete_session(session_id):
         flash("Session not found.", "danger")
         return redirect(url_for('profile_master'))
     
+    # requirement: Session can be edited ONLY if 0 adventurers joined
+
     taken = enrollments_dao.get_places_taken(session_id)
     total_enrolled = taken['warrior'] + taken['mage'] + taken['healer']
 
@@ -579,7 +602,8 @@ def profile_user():
             'mage':  taken['mage'],
             'healer':  taken['healer']
         }
-        
+
+        #The 8-hour rule check to toggle edit buttons in HTML
         session_minutes = day_time_to_minutes(e['day'], e['start_time'])
         time_diff = session_minutes - current_minutes
         
@@ -603,7 +627,7 @@ def edit_enrollment(session_id):
         flash("Session not found.", "danger")
         return redirect(url_for('profile_user'))
 
-    
+    # 8-hour rule (480 mins) backend validation
     current_minutes = day_time_to_minutes(SIMULATED_CURRENT_TIME['day'], SIMULATED_CURRENT_TIME['time'])
     session_minutes = day_time_to_minutes(session_data['day'], session_data['start_time'])
     
@@ -706,6 +730,7 @@ def profile_council():
     all_sessions = quest_sessions_dao.get_all_sessions()
     all_enrollments = enrollments_dao.get_all_enrollments()
 
+    # Calculate global platform statistics
     total_adventurers = len(all_adventurers)
     total_quests = len(all_quests)
     total_sessions = len(all_sessions)
