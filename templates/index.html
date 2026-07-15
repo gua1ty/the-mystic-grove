@@ -1,12 +1,25 @@
 {% extends "base.html" %}
+{% block title %}The Mystic Grove | Quest Board{% endblock %}
 
 {% block content %}
 
 <div class="filter col-12 text-center mt-2">
 
     <header class="welcome-title pt-2 mb-4 mt-2">
-        <h1>Welcome back {{current_user.username}}!</h1>
-        <h2> - Find your next quest! - </h2>
+    
+        {% if not current_user.is_authenticated %}
+            <h1>Welcome!</h1>
+            <h2> - Find your next quest! - </h2>
+            
+        {% else %}
+            <h1>Welcome back {{current_user.username}}!</h1>
+                        
+            {% if current_user.role == 'adventurer' %}
+                <h2> - Find your next quest! - </h2>
+            {% endif %}
+            
+        {% endif %}
+    
     </header>
 
 
@@ -83,7 +96,6 @@
     </form>
 
     <!-- Session Cards-->
-
 
     <section class="quest-section col-12 mt-4">
 

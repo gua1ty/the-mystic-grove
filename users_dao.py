@@ -9,7 +9,6 @@ def new_user(p_username, p_email, p_password, p_role):
 
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-
     cursor.execute(query, (p_username, p_email, p_password, p_role))
 
     conn.commit()

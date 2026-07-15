@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% block title %}Quest Details {% endblock %}
+
+
 {% block content %}
 
 <div class="quest-info col-md-7 me-5">
@@ -106,18 +109,21 @@
                 <form action="{{ url_for('enroll', session_id=session.id) }}"
                     method="POST">
 
-                    {% if current_user.is_authenticated and (current_user.role
-                    == 'guild_master' or current_user.role == 'guild_council')
-                    %}
-
-                    <p class="text-center">Guild Masters and Council members
-                        cannot enroll in quests.</p>
-
-                    {% elif session.places.warrior >= 4 and session.places.mage
-                    >= 3 and session.places.healer >= 2 %}
-
-                    <p>No more places available for this session</p>
-
+                    {% if is_past %}
+                    <p class="text-center fw-bold mt-4">This session has already ended.</p>
+                
+                    {% elif is_enrolled %}
+                    <p class="text-center fw-bold mt-4">You are already enrolled in this session</p>
+                
+                    {% elif current_user.is_authenticated and current_user.role == 'guild_master' %}
+                    <p class="text-center mt-4">As a Guild Master you can't in a quest session.</p>
+                
+                    {% elif current_user.is_authenticated and current_user.role == 'guild_council' %}
+                    <p class="text-center mt-4">As a Guild Council administrator, you can't in a quest session.</p>
+                
+                    {% elif session.places.warrior >= 4 and session.places.mage >= 3 and session.places.healer >= 2 %}
+                    <p class="text-center mt-4">No more places available for this session.</p>
+                
                     {% else %}
 
                     <h5 class="form-label purple fw-bold mb-3 text-center">

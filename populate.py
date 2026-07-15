@@ -81,10 +81,13 @@ def populate_db():
     ''', sessions_data)
 
     enrollments_data = [
-    (2, 1, 'warrior', 2),   # Zephyr — Monday 10:00, ormai passata (non modificabile)
-    (3, 1, 'warrior', 2),   # Lyra — stessa sessione, ruolo Warrior ora COMPLETO (4/4)
-    (4, 4, 'mage', 1),      # Sylas — Tuesday 16:00, tra 6h: dentro le 8h di blocco (non modificabile, ma sessione ancora futura)
-    (5, 5, 'healer', 1),    # Willow — Wednesday 11:00, tra 25h: OLTRE le 8h (modificabile!)
+
+    (4, 2, 'warrior', 2),   
+
+    (2, 6, 'mage', 2),      
+    (3, 6, 'mage', 1),           
+    (2, 4, 'healer', 1),     
+    (5, 7, 'healer', 1),      
     ]
     cursor.executemany('''
         INSERT INTO enrollments (user_id, session_id, class, places)
@@ -93,7 +96,7 @@ def populate_db():
 
     conn.commit()
     conn.close()
-    print("Database successfully cleared and repopulated with Guild Master!")
+    print("Database successfully cleared and repopulated")
 
 if __name__ == '__main__':
     populate_db()

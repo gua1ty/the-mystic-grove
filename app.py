@@ -207,9 +207,23 @@ def quest_session(session_id):
     if db_session is None:
         flash("Session not found.", "danger")
         return redirect(url_for('home'))
- 
-    return render_template("quest.html", session=db_session)
+    
+    current_minutes = day_time_to_minutes(SIMULATED_CURRENT_TIME['day'], SIMULATED_CURRENT_TIME['time'])
+    session_minutes = day_time_to_minutes(db_session['day'], db_session['start_time'])
+    
+    is_past = (session_minutes <= current_minutes)
 
+    is_enrolled = False
+    if current_user.is_authenticated and current_user.role == 'adventurer':
+        user_current_session_enrollment = enrollments_dao.get_enrollment_for_user_session(current_user.id, session_id)
+        if user_current_session_enrollment is not None:
+            is_enrolled = True
+ 
+    return render_template("quest.html", 
+                           session=db_session, 
+                           is_past=is_past, 
+                           is_enrolled=is_enrolled)
+ 
 
 @app.route('/enroll/<int:session_id>', methods=['POST'])
 @login_required

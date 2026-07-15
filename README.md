@@ -21,28 +21,31 @@ The application is live and deployed on PythonAnywhere:
 ## Test Accounts (Credentials)
 *Note: Please use the **Email** to log in, not the username.*
 
-### 1. Guild Master (Administrator)
-Can create new quests, schedule sessions, modify/cancel empty sessions, and view participation statistics.
+### 1. Guild Master 
+In his profile page create new quests, schedule sessions, modify/cancel empty sessions, and view participation statistics. 
 * **Email:** `master@guild.com`
 * **Password:** `master123`
 
-### 2. Guild Council (Prova Finale Extra Requirement)
-Has access to a dedicated dashboard to view platform statistics, adventurer lists, and overall guild activity.
+### 2. Guild Council (Prova Finale)
+Has access to a dedicated dashboard by going to his profile page to view platform statistics, adventurer lists, and overall guild activity. 
 * **Email:** `council@guild.com`
 * **Password:** `council123`
 
 ### 3. Adventurers (Registered Users)
-Can explore quests, filter sessions, and manage their enrollments. I have prepared specific accounts to demonstrate the different time constraints and edge cases. 
-
+ 
 All adventurer accounts share the same password: **`password`**
 
-* **Willow** (`willow@sunlitgrove.net`)
-  * *Test Case: Modifiable Enrollment.* Enrolled in a session on Wednesday at 11:00. Because this is more than 8 hours away from the simulated time (Tuesday 10:00), Willow can still modify or cancel this participation in her profile.
-* **Sylas** (`sylas@deepwoods.com`)
-  * *Test Case: Blocked by 8-hour limit.* Enrolled in a session on Tuesday at 16:00. This is in the future, but strictly within the 8-hour lockdown window. Modifications are disabled.
-* **Zephyr** (`zephyr@windsong.com`)
-  * *Test Case: Past Session & Fully Booked Role (1/2).* Enrolled as a Warrior for the Monday 10:00 session. This session is already in the past (unmodifiable). He takes 2 places.
-* **Lyra** (`lyra@moonglow.com`)
-  * *Test Case: Past Session & Fully Booked Role (2/2).* Enrolled as a Warrior for the same Monday 10:00 session, taking the remaining 2 places. Together with Zephyr, they make the Warrior role **fully booked** (4/4 places) for that specific session.
+* Zephyr (`zephyr@windsong.com`) 
+  - Session 4 (Tuesday 16:00) - Healer [1 place]: Starts in 6 hours. Test: The enrollment is NOT modifiable.
+  - Session 6 (Wednesday 18:00) - Mage [2 places]: The user currently has 2 total enrollments.
+
+* Lyra (`lyra@moonglow.com`) 
+  - Session 6 (Wednesday 18:00) - Mage [1 place]: Combined with Zephyr's 2 places, the Mage role is full (3/3). Test: Other users will find the Mage role disabled for this specific session.
+
+* Sylas (`sylas@deepwoods.com`) 
+  - Session 2 (Monday 15:00) - Warrior [2 places]: This session is already in the past compared to the simulated current time. Test: The enrollment cannot be modified or canceled.
+
+* Willow (`willow@sunlitgrove.net`) 
+  - Session 7 (Thursday 14:00) - Healer [1 place]: This session starts in more than 48 hours. Test: The modification and cancellation buttons are active.
 
 ---
