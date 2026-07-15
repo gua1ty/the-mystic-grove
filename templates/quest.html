@@ -116,10 +116,10 @@
                     <p class="text-center fw-bold mt-4">You are already enrolled in this session</p>
                 
                     {% elif current_user.is_authenticated and current_user.role == 'guild_master' %}
-                    <p class="text-center mt-4">As a Guild Master you can't in a quest session.</p>
+                    <p class="text-center mt-4">As a Guild Master you can't join a quest session.</p>
                 
                     {% elif current_user.is_authenticated and current_user.role == 'guild_council' %}
-                    <p class="text-center mt-4">As a Guild Council administrator, you can't in a quest session.</p>
+                    <p class="text-center mt-4">As a Guild Council administrator, you can't join a quest session.</p>
                 
                     {% elif session.places.warrior >= 4 and session.places.mage >= 3 and session.places.healer >= 2 %}
                     <p class="text-center mt-4">No more places available for this session.</p>

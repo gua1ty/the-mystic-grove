@@ -12,6 +12,9 @@ The application is live and deployed on PythonAnywhere:
 
 ---
 
+## Target device
+Desktop
+
 ## Simulated Time and Day Settings
 * **Simulated Day:** Tuesday
 * **Simulated Time:** 10:00

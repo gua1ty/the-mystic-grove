@@ -21,7 +21,8 @@ def new_enrollment (p_user_id, p_session_id, p_class, p_places):
 
 def get_enrollments_by_user(p_user_id):
     query = """
-            SELECT e.*, s.day, s.start_time, s.location, q.*
+            SELECT e.*, s.day, s.start_time, s.location, 
+                q.title, q.description, q.duration_min, q.quest_type, q.difficulty, q.quest_img
             FROM enrollments e 
             JOIN quest_sessions s ON e.session_id = s.id
             JOIN quests q ON s.quest_id = q.id
