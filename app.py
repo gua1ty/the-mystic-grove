@@ -121,6 +121,8 @@ def login():
 
 @app.route("/authenticate", methods=["POST"])
 def authenticate():
+
+    
     form_user = request.form.to_dict()
 
     db_user = users_dao.get_user_by_email(form_user["txt_email"])
@@ -303,12 +305,12 @@ def enroll(session_id):
 
     user_enrollments = enrollments_dao.get_enrollments_by_user(current_user.id)
 
-    # requirement: Max 3 sessions per week
+    # Max 3 sessions per week
     if len(user_enrollments) >=3:
         flash("Limit reached: you already enrolled to 3 session for this week","danger" )
         return redirect(url_for('quest_session', session_id=session_id))
     
-    #requirement: overlapping times for the same adventurer
+    #overlapping times for the same adventurer
     for e in user_enrollments:
         overlap = sessions_overlap(
             db_session['day'], db_session['start_time'], db_session['duration_min'],
@@ -506,7 +508,7 @@ def edit_session(session_id):
         flash("Session not found.", "danger")
         return redirect(url_for('profile_master'))
     
-    # requirement: Session can be edited ONLY if 0 adventurers joined
+    # Session can be edited if no adventurers joined
 
     taken = enrollments_dao.get_places_taken(session_id)
     total_enrolled = taken['warrior'] + taken['mage'] + taken['healer']
@@ -525,7 +527,7 @@ def edit_session(session_id):
         flash("You cannot move a session to the past.", "danger")
         return redirect(url_for('profile_master'))
 
-    # requirement: Overlap ignoring the current session being edited
+    # oerlap ignoring the current session being edited
     existing_sessions_same_location = quest_sessions_dao.get_sessions_by_location(location)
 
     for existing in existing_sessions_same_location:
@@ -563,7 +565,7 @@ def delete_session(session_id):
         flash("Session not found.", "danger")
         return redirect(url_for('profile_master'))
     
-    # requirement: Session can be edited ONLY if 0 adventurers joined
+    # session can be edited oniy if no adventurers joined
 
     taken = enrollments_dao.get_places_taken(session_id)
     total_enrolled = taken['warrior'] + taken['mage'] + taken['healer']
